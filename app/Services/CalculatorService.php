@@ -28,7 +28,7 @@ class CalculatorService
 
     public function processOperation($option, $number){
         
-        $number = $number ?: 0;
+        $number = is_numeric($number) ? (int)$number : 0;
 
         $operation = Operation::where('option', $option)
                                 ->where('number', $number)
