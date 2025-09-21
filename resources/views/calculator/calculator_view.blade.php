@@ -15,46 +15,26 @@
             <form action="{{ route('calculator_process') }}" method="POST" name="form">
                 @csrf
 
-                <div class="row mb-3 align-items-center">
-                    <div class="col-6 fs-4 d-flex justify-content-end">Número:</div>
-                    <div class="col-6">
-                        <input type="number" min="0" class="form-control fs-3 w-75" id="numberInput" 
-                               placeholder="0" name="number" value="{{ $operation->number ?? 0 }}">
-                    </div>
-                </div>
+                <x-calculator-input label="Número" type="number" name="number" id="numberInput"
+                    :value="$operation->number ?? 0" min="0" />
 
-                <div class="row mb-3 align-items-center">
-                    <div class="col-6 fs-4 d-flex justify-content-end">Resultado:</div>
-                    <div class="col-6">
-                        <input type="text" class="form-control fs-3 w-75" value="{{ $operation->result ?? '' }}" 
-                               id="resultOutput" readonly/>
-                    </div>
-                </div>
-                
+                <x-calculator-input label="Resultado" type="text" id="resultOutput" :value="$operation->result ?? ''"
+                    :readonly="true" />
+
                 <div class="row mb-3">
-                    <div class="col-6 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-dark btn-lg w-75 py-3" 
-                                name="option" value="factorial">Factorial</button>
-                    </div>
-                    <div class="col-6 d-flex justify-content-start">
-                        <button type="submit" class="btn btn-dark btn-lg w-75 py-3" 
-                                name="option" value="fibonacci">Fibonacci</button>
-                    </div>
+                    <x-calculator-button text="Factorial" value="factorial" position="end" />
+
+                    <x-calculator-button text="Fibonacci" value="fibonacci" position="start" />
                 </div>
 
                 <div class="row">
-                    <div class="col-6 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-dark btn-lg w-75 py-3" 
-                                name="option" value="ackermann">Ackermann</button>
-                    </div>
-                    <div class="col-6 d-flex justify-content-start">
-                        <button type="submit" class="btn btn-dark btn-lg w-75 py-3" 
-                                name="option" value="limpiar">Limpiar</button>
-                    </div>
-                </div>
+                    <x-calculator-button text="Ackermann" value="ackermann" position="end" />
 
+                    <x-calculator-button text="Limpiar" value="limpiar" position="start"/>
+                </div>
             </form>
         </div>
     </div>
 </body>
+
 </html>

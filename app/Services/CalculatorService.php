@@ -27,6 +27,9 @@ class CalculatorService
     }
 
     public function processOperation($option, $number){
+
+        if($number == null) $number = 0;
+
         $operation = Operation::where('option', $option)
                                 ->where('number', $number)
                                 ->first();
