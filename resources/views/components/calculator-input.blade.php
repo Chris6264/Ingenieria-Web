@@ -8,6 +8,7 @@
                placeholder="{{ $placeholder }}"
                value="{{ $value }}"
                @if($readonly) readonly @endif
-               @if($min) min="{{ $min }}" @endif>
+               @if(isset($min)) min="{{ $min }}" @endif
+               {{ $attributes }}>
     </div>
 </div>

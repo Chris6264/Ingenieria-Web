@@ -20,15 +20,18 @@ class CalculatorController extends Controller
         return view('calculator.calculator_view');
     }
 
-    public function calculator_process(Request $request){
+    public function calculator_process(Request $request)
+    {
         $option = $request->input('option');
         $number = $request->input('number');
-        $operation = new Operation();
-        
-        if($option != 'limpiar'){
+
+        $operation = null;
+
+        if ($option !== 'limpiar' && $number !== null) {
             $operation = $this->calculatorService->processOperation($option, $number);
-        } 
+        }
 
         return view('calculator.calculator_view', compact('operation'));
-    }
+}
+
 }
