@@ -12,21 +12,21 @@
     <div class="card shadow-lg p-4" style="max-width: 700px; width: 100%; border-radius: 20px;">
         <h2 class="text-center mb-4">Calculadora</h2>
         <div class="container">
-            <form action="{{ route('calculator_home') }}" method="POST" name="form">
+            <form action="{{ route('calculator_process') }}" method="POST" name="form">
                 @csrf
 
                 <div class="row mb-3 align-items-center">
                     <div class="col-6 fs-4 d-flex justify-content-end">Número:</div>
                     <div class="col-6">
                         <input type="number" min="0" class="form-control fs-3 w-75" id="numberInput" 
-                               placeholder="0" name="number" value="{{ $number ?? '' }}">
+                               placeholder="0" name="number" value="{{ $operation->number ?? '0' }}">
                     </div>
                 </div>
 
                 <div class="row mb-3 align-items-center">
                     <div class="col-6 fs-4 d-flex justify-content-end">Resultado:</div>
                     <div class="col-6">
-                        <input type="text" class="form-control fs-3 w-75" value="{{ $result ?? '' }}" 
+                        <input type="text" class="form-control fs-3 w-75" value="{{ $operation->result ?? '' }}" 
                                id="resultOutput" readonly/>
                     </div>
                 </div>

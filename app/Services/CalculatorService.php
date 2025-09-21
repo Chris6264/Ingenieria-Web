@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\Operation;
+
 class CalculatorService
 {
     public function factorial($number)
@@ -22,6 +24,37 @@ class CalculatorService
         if($m==0) return $n+1;
         else if($m > 0 && $n == 0) return $this->ackermann($m-1, 1);
         else if($m > 0 && $n > 0) return $this->ackermann($m - 1, $this->ackermann($m, $n - 1));
-        return 0;
+    }
+
+    public function operacion($option, $number){
+        $operation = '';
+        $operation = Operation::where('option', $option)
+                                ->where('number', $number)
+                                ->first();
+
+        if($operation){
+            return $operation;
+        }
+
+        $result = '';
+        switch($option){
+            case 'factorial':
+                $result = $this->factorial($number);
+                break;
+            case 'fibonacci':
+                $result = $this->fibonacci($number);
+                break;
+            case 'ackermann':
+                $result = $this->ackermann(1, $number);
+                break;
+            default:
+                $result = 0;
+        }
+        $operation = Operation::create([
+            'option' => $option,
+            'number' => $number,
+            'result' => $result
+        ]);
+        return $operation;
     }
 }
