@@ -19,7 +19,7 @@
                     <div class="col-6 fs-4 d-flex justify-content-end">Número:</div>
                     <div class="col-6">
                         <input type="number" min="0" class="form-control fs-3 w-75" id="numberInput" 
-                               placeholder="0" name="number" value="{{ $operation->number ?? '0' }}">
+                               placeholder="0" name="number" value="{{ $operation->number ?? 0 }}">
                     </div>
                 </div>
 

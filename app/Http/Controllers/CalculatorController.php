@@ -11,18 +11,13 @@ class CalculatorController extends Controller
 
     private $calculatorService;
 
-    // Inyectamos el servicio mediante el constructor
     public function __construct()
     {
         $this->calculatorService = new CalculatorService;
     }
 
     public function calculator_home(){
-        return view('calculator.calculator', [
-                'result' => '',
-                'option' => '',
-                'number' => ''
-            ]);
+        return view('calculator.calculator_view');
     }
 
     public function calculator_process(Request $request){
@@ -31,12 +26,9 @@ class CalculatorController extends Controller
         $operation = new Operation();
         
         if($option != 'limpiar'){
-            $operation = $this->calculatorService->operacion($option, $number);
-        } else {
-            $number = '0';
-            $result = '';
-        }
-        
-        return view('calculator.calculator', compact('operation'));
+            $operation = $this->calculatorService->processOperation($option, $number);
+        } 
+
+        return view('calculator.calculator_view', compact('operation'));
     }
 }

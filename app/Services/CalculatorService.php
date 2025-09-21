@@ -26,8 +26,7 @@ class CalculatorService
         else if($m > 0 && $n > 0) return $this->ackermann($m - 1, $this->ackermann($m, $n - 1));
     }
 
-    public function operacion($option, $number){
-        $operation = '';
+    public function processOperation($option, $number){
         $operation = Operation::where('option', $option)
                                 ->where('number', $number)
                                 ->first();
@@ -36,7 +35,7 @@ class CalculatorService
             return $operation;
         }
 
-        $result = '';
+        $result = 0;
         switch($option){
             case 'factorial':
                 $result = $this->factorial($number);
@@ -50,6 +49,7 @@ class CalculatorService
             default:
                 $result = 0;
         }
+
         $operation = Operation::create([
             'option' => $option,
             'number' => $number,

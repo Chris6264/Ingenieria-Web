@@ -5,4 +5,4 @@ use App\Http\Controllers\CalculatorController;
 
 Route::get('/', [CalculatorController::class, 'calculator_home'])->name('calculator_home');
 
-Route::post('/calculate', [CalculatorController::class, 'calculator_process'])->name('calculator_process');
+Route::post('/', [CalculatorController::class, 'calculator_process'])->name('calculator_process');
