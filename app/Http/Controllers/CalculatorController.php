@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Operation;
 use Illuminate\Http\Request;        
 use App\Services\CalculatorService;
 
@@ -13,7 +12,7 @@ class CalculatorController extends Controller
 
     public function __construct()
     {
-        $this->calculatorService = new CalculatorService;
+        $this->calculatorService = new CalculatorService();
     }
 
     public function calculator_home(){
