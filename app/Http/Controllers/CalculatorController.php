@@ -10,9 +10,9 @@ class CalculatorController extends Controller
 
     private $calculatorService;
 
-    public function __construct()
+    public function __construct(CalculatorService $calculatorService)
     {
-        $this->calculatorService = new CalculatorService();
+        $this->calculatorService = $calculatorService;
     }
 
     public function calculator_home(){

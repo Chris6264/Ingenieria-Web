@@ -9,8 +9,8 @@ class CalculatorService
 {
     private $operationRepository;
 
-    public function __construct(){
-        $this->operationRepository = new OperationRepository();
+    public function __construct(OperationRepository $operationRepository){
+        $this->operationRepository = $operationRepository;
     }
 
     private function factorial($number)
