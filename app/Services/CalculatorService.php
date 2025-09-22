@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Operation;
 use App\Repositories\OperationRepository;
 
 class CalculatorService
