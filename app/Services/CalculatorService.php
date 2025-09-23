@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\OperationRepository;
+use App\Services\Operation;
 
 class CalculatorService
 {
@@ -37,10 +38,10 @@ class CalculatorService
         $operation = $this->operationRepository->searchObject($option,$number);
 
         if($operation != null){
-            return $operation;
+            $op = new Operation($operation->option,$operation->number,$operation->result);
+            return $op;
         }
-
-        $result = 0;
+        
         switch($option){
             case 'factorial':
                 $result = $this->factorial($number);
@@ -56,6 +57,7 @@ class CalculatorService
         }
 
         $operation = $this->operationRepository->saveObject($option,$number,$result);
-        return $operation;
+        $op = new Operation($operation->option,$operation->number,$operation->result);
+        return $op;
     }
 }

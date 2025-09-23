@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;        
+use Illuminate\Http\Request;
 use App\Services\CalculatorService;
 
 class CalculatorController extends Controller
@@ -15,9 +15,12 @@ class CalculatorController extends Controller
         $this->calculatorService = $calculatorService;
     }
 
-    public function calculator_home(){
-        return view('calculator.calculator_view');
+    public function calculator_home()
+    {
+        $operation = null;
+        return view('calculator.calculator_view', compact('operation'));
     }
+
 
     public function calculator_process(Request $request)
     {
@@ -31,6 +34,5 @@ class CalculatorController extends Controller
         }
 
         return view('calculator.calculator_view', compact('operation'));
-}
-
+    }
 }

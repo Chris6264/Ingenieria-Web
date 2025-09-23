@@ -16,9 +16,11 @@
                 @csrf
 
                 <x-calculator-input label="Número" type="number" name="number" id="numberInput"
-                    :value="$operation->number ?? 0" min="0" oninput="this.value=this.value.replace(/[^0-9.]/g,'')"/>
+                   value="{{ optional($operation)->getNumber() ?? 0 }}"
+                    min="0" oninput="this.value=this.value.replace(/[^0-9.]/g,'')"/>
 
-                <x-calculator-input label="Resultado" type="text" id="resultOutput" :value="$operation->result ?? ''"
+                <x-calculator-input label="Resultado" type="text" id="resultOutput"  
+                value="{{ optional($operation)->getResult() ?? ''}}"
                     :readonly="true" />
 
                 <div class="row mb-3">

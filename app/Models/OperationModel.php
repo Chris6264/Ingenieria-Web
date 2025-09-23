@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Operation extends Model
+class OperationModel extends Model
 {
     protected $table = 'operations';
     protected $fillable = ['option', 'number', 'result'];
