@@ -16,12 +16,11 @@
                 @csrf
 
                 <x-calculator-input label="Número" type="number" name="number" id="numberInput"
-                   value="{{ optional($operation)->getNumber() ?? 0 }}"
-                    min="0" oninput="this.value=this.value.replace(/[^0-9.]/g,'')"/>
+                    value="{{ optional($operation)->getNumber() ?? 0 }}" min="0"
+                    oninput="this.value=this.value.replace(/[^0-9.]/g,'')" />
 
-                <x-calculator-input label="Resultado" type="text" id="resultOutput"  
-                value="{{ optional($operation)->getResult() ?? ''}}"
-                    :readonly="true" />
+                <x-calculator-input label="Resultado" type="text" id="resultOutput"
+                    value="{{ optional($operation)->getResult() ?? '' }}" :readonly="true" />
 
                 <div class="row mb-3">
                     <x-calculator-button text="Factorial" value="factorial" position="end" />
@@ -32,7 +31,7 @@
                 <div class="row">
                     <x-calculator-button text="Ackermann" value="ackermann" position="end" />
 
-                    <x-calculator-button text="Limpiar" value="limpiar" position="start"/>
+                    <x-calculator-button text="Limpiar" value="limpiar" position="start" />
                 </div>
             </form>
         </div>
