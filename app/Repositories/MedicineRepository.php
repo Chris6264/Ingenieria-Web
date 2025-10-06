@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Models\MedicationModel;
 use App\Models\BranchModel;
-use App\Models\InventoryModel;
 use App\Models\PrescriptionMedicationModel;
 use App\Models\PrescriptionModel;
 use Illuminate\Support\Facades\Log;
@@ -26,11 +25,6 @@ class MedicineRepository
     public function rollbackTransaction()
     {
         DB::rollBack();
-    }
-
-    public function findByName(string $name)
-    {
-        return MedicationModel::where('name', $name)->first();
     }
 
     public function lastPrescriptionID(){
@@ -73,34 +67,6 @@ class MedicineRepository
         }
     }
 
-    public function getStockByNameAndBranch(string $name, string $num, string $farm)
-    {
-        try {
-            $medication = $this->findMedicationByName($name);
-            if (!$medication) {
-                Log::info("No se encontró medicamento", ['name' => $name]);
-                return 0;
-            }
-        
-
-            $stock = InventoryModel::where('id_medication', $medication->id_medication)
-                ->where('id_branch', $num)
-                ->where('id_pharmacy', $farm)
-                ->sum('current_stock');
-
-            Log::info("Stock consultado", [
-                'medication' => $name,
-                'id_branch' => $num,
-                'id_pharmacy' => $farm,
-                'stock' => $stock
-            ]);
-
-            return (int) $stock;
-        } catch (\Exception $e) {
-            return 0;
-        }
-    }
-
     public function getStock(string $name, string $num, string $farm)
     {
         try {
@@ -138,7 +104,7 @@ class MedicineRepository
 
     for ($i = 0; $i < $maxRetries; $i++) {
         try {
-            $medication = $this->findByName($name);
+            $medication = $this->findMedicationByName($name);
             if (!$medication) {
                 Log::warning("Medicamento no encontrado para actualizar", ['name' => $name]);
                 return false;

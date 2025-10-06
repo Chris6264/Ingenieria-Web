@@ -25,7 +25,7 @@ class MedicineService
 
     public function getStock(string $medicationName, string $num, string $farm): int
     {
-        return $this->medicineRepository->getStockByNameAndBranch($medicationName, $num, $farm);
+        return $this->medicineRepository->getStock($medicationName, $num, $farm);
     }
 
     public function processPrescription($pharmacyName, $branchId, $branchFarm, $branchName, $medications)

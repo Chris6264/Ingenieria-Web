@@ -76,11 +76,6 @@ class MedicineController extends Controller
             }
         }
 
-        if (empty($medications)) {
-            echo "ERROR: No hay medicamentos en la receta<br>";
-            return;
-        }
-
         $prescription = $this->medicineService->processPrescription(
             $pharmacyName,
             $branchId,
