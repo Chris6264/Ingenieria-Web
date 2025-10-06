@@ -35,17 +35,17 @@ class MedicineRepository
         }
     }
 
-    public function newPrescription($ID){
+    public function newPrescription($id){
         return PrescriptionModel::create([
-            'id_prescription' => $ID,
-            'description' => "Receta " . $ID,
+            'id_prescription' => $id,
+            'description' => "Receta " . $id,
         ]);
     }
 
-    public function savePrescriptionsMedications($IDPrescription, $IDMedication){
+    public function savePrescriptionsMedications($idPrescription, $idMedication){
         PrescriptionMedicationModel::create([
-            'id_prescription' => $IDPrescription,
-            'id_medication' => $IDMedication
+            'id_prescription' => $idPrescription,
+            'id_medication' => $idMedication
         ]);
     }
 
