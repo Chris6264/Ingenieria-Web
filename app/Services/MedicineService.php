@@ -48,7 +48,7 @@ class MedicineService
             $name = $med['name'];
             $quantity = $med['units'];
         
-            $stock = $this->medicineRepository->getStockWithLock(
+            $stock = $this->medicineRepository->getStock(
                 $name,
                 $branchId,
                 $branchFarm

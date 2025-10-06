@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resultado de Prescripción</title>
+    <title>Resultado de Receta</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
 
     <div class="container mt-5">
-        <h2 class="mb-4 text-center">Resultado de la Prescripción</h2>
+        <h2 class="mb-4 text-center">Receta</h2>
 
         @if(isset($error))
             <div class="alert alert-danger text-center">
@@ -24,11 +24,11 @@
 
         @elseif(isset($prescription))
             <div class="card shadow p-4">
-                <h4 class="mb-3">Detalles de la prescripción:</h4>
+                <h4 class="mb-3">Detalles de la receta:</h4>
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>ID Prescripción</th>
+                            <th>ID receta</th>
                             <th>Descripción</th>
                         </tr>
                     </thead>
@@ -40,7 +40,6 @@
                     </tbody>
                 </table>
 
-                {{-- Datos adicionales --}}
                 <div class="mt-4">
                     <h5>Información adicional:</h5>
                     <ul>
@@ -51,7 +50,6 @@
                     </ul>
                 </div>
 
-                {{-- Medicamentos procesados --}}
                 <div class="mt-4">
                     <h5>Medicamentos procesados:</h5>
                     @if(!empty($medications))

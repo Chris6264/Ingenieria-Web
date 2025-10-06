@@ -18,8 +18,6 @@
         <div class="card-body">
             <form method="POST" action="{{ route('medicine_process') }}" id="prescriptionForm" enctype="multipart/form-data">
                 @csrf
-
-                <!-- Primera fila: Farmacia y Sucursal -->
                 <div class="row g-3 mb-3">
                     <div class="col-12 col-md-6">
                         <label for="pharmacy" class="form-label">Farmacia</label>
@@ -32,7 +30,6 @@
                     </div>
                 </div>
 
-                <!-- Segunda fila: Num Sucursal y Farmacia (ID) -->
                 <div class="row g-3 mb-3">
                     <div class="col-12 col-md-6">
                         <label for="branchId" class="form-label">Num Sucursal</label>
@@ -46,7 +43,6 @@
                     </div>
                 </div>
 
-                <!-- Tercera fila: Medicamento, Número de Unidades, En existencia -->
                 <div class="row g-3 mb-3 align-items-end">
                     <div class="col-12 col-md-4">
                         <label for="medication" class="form-label">Medicamento</label>
@@ -68,9 +64,6 @@
                     </div>
                 </div>
 
-                <!-- Botón Agregar (ya está en la fila anterior) -->
-
-                <!-- Sección Descripción de la Receta como tabla -->
                 <div class="card bg-light border-secondary mb-3">
                     <div class="card-body">
                         <h5 class="card-title">Descripción de la Receta</h5>
@@ -92,10 +85,8 @@
                     </div>
                 </div>
 
-                <!-- Campo oculto para contar medicamentos -->
                 <input type="hidden" name="medications_count" id="medications_count" value="0">
 
-                <!-- Botón Generar -->
                 <button type="submit" class="btn btn-primary w-100 mt-3" id="btnGenerar" disabled>Generar</button>
             </form>
         </div>

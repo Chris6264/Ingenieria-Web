@@ -1,8 +1,6 @@
 import './bootstrap';
 
-// Esperar a que el DOM esté cargado
 document.addEventListener('DOMContentLoaded', function() {
-    // Verificar que estamos en la página correcta
     const prescriptionForm = document.getElementById('prescriptionForm');
     if (!prescriptionForm) return;
 
@@ -149,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const stock = parseInt(inStockInput.value);
 
         if (!medName || units <= 0 || units > stock) {
-            alert('⚠️ Verifica el medicamento y las unidades');
+            alert('Verifica el medicamento y las unidades');
             return;
         }
 
@@ -158,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .filter(text => text !== ''); 
         
         if (existingMeds.includes(medName)) {
-            alert(`⚠️ El medicamento "${medName}" ya fue agregado a la receta`);
+            alert(`El medicamento "${medName}" ya fue agregado a la receta`);
             return;
         }
 

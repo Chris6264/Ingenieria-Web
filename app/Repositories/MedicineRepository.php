@@ -9,6 +9,7 @@ use App\Models\PrescriptionMedicationModel;
 use App\Models\PrescriptionModel;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
 
 class MedicineRepository
 {
@@ -72,7 +73,7 @@ class MedicineRepository
         }
     }
 
-    public function getStockByNameAndBranch(string $name, string $num, string $farm): int
+    public function getStockByNameAndBranch(string $name, string $num, string $farm)
     {
         try {
             $medication = $this->findMedicationByName($name);
@@ -100,7 +101,7 @@ class MedicineRepository
         }
     }
 
-    public function getStockWithLock(string $name, string $num, string $farm): ?int
+    public function getStock(string $name, string $num, string $farm)
     {
         try {
             $medication = $this->findMedicationByName($name);
@@ -113,7 +114,6 @@ class MedicineRepository
                 ->where('id_medication', $medication->id_medication)
                 ->where('id_branch', $num)
                 ->where('id_pharmacy', $farm)
-                ->lockForUpdate()  
                 ->first();
 
             if (!$inventory) {
@@ -132,27 +132,46 @@ class MedicineRepository
         }
     }
 
-    public function updateStock(string $name, string $num, string $farm, int $newStock): bool
-    {
-        $medication = $this->findByName($name);
-        if (!$medication) {
-            Log::warning("Medicamento no encontrado para actualizar", ['name' => $name]);
+    public function updateStock(string $name, string $num, string $farm, int $newStock)
+{
+    $maxRetries = 3;
+
+    for ($i = 0; $i < $maxRetries; $i++) {
+        try {
+            $medication = $this->findByName($name);
+            if (!$medication) {
+                Log::warning("Medicamento no encontrado para actualizar", ['name' => $name]);
+                return false;
+            }
+
+            $updated = DB::table('inventories')
+                ->where('id_medication', $medication->id_medication)
+                ->where('id_branch', $num)
+                ->where('id_pharmacy', $farm)
+                ->lockForUpdate()
+                ->update(['current_stock' => $newStock]);
+
+            Log::info("Stock actualizado", [
+                'medication' => $name,
+                'new_stock' => $newStock,
+                'rows_affected' => $updated
+            ]);
+
+            return $updated > 0;
+        } catch (QueryException $e) {
+            if (str_contains(strtolower($e->getMessage()), 'deadlock')) {
+                Log::warning("Deadlock detectado, reintentando ($i)");
+                usleep(200000);
+                continue;
+            }
+            Log::error("Error SQL al actualizar stock: " . $e->getMessage());
+            return false;
+        } catch (\Exception $e) {
+            Log::error("Error al actualizar stock: " . $e->getMessage());
             return false;
         }
-
-        $updated = DB::table('inventories')
-            ->where('id_medication', $medication->id_medication)
-            ->where('id_branch', $num)
-            ->where('id_pharmacy', $farm)
-            ->lockForUpdate()
-            ->update(['current_stock' => $newStock]);
-
-        Log::info("Stock actualizado", [
-            'medication' => $name,
-            'new_stock' => $newStock,
-            'rows_affected' => $updated
-        ]);
-
-        return $updated > 0;
+    }
+    Log::error("Error: máximo de reintentos alcanzado al actualizar stock");
+    return false;
     }
 }
