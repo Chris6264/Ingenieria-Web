@@ -46,7 +46,7 @@
                         <li><strong>Farmacia:</strong> {{ $pharmacyName ?? 'N/A' }}</li>
                         <li><strong>Sucursal:</strong> {{ $branchName ?? 'N/A' }}</li>
                         <li><strong>ID Sucursal:</strong> {{ $branchId ?? 'N/A' }}</li>
-                        <li><strong>Farm:</strong> {{ $branchFarm ?? 'N/A' }}</li>
+                        <li><strong>ID Farm:</strong> {{ $branchFarm ?? 'N/A' }}</li>
                     </ul>
                 </div>
 
