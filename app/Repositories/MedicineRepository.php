@@ -49,9 +49,9 @@ class MedicineRepository
         ]);
     }
 
-    public function findMedicationByName(string $name)
+    public function findMedicationByName(string $medicationName)
     {
-        return MedicationModel::where('name', $name)->first();
+        return MedicationModel::where('name', $medicationName)->first();
     }
 
     public function findBranchByNameAndPharmacyName(string $branchName, string $pharmacyName)
@@ -67,26 +67,26 @@ class MedicineRepository
         }
     }
 
-    public function getStock(string $name, string $num, string $farm)
+    public function getStock(string $mediactionName, string $idBranch, string $idPharmacy)
     {
         try {
-            $medication = $this->findMedicationByName($name);
+            $medication = $this->findMedicationByName($mediactionName);
             if (!$medication) {
-                Log::warning("Medicamento no encontrado", ['name' => $name]);
+                Log::warning("Medicamento no encontrado", ['name' => $mediactionName]);
                 return null;
             }
 
             $inventory = DB::table('inventories')
                 ->where('id_medication', $medication->id_medication)
-                ->where('id_branch', $num)
-                ->where('id_pharmacy', $farm)
+                ->where('id_branch', $idBranch)
+                ->where('id_pharmacy', $idPharmacy)
                 ->first();
 
             if (!$inventory) {
                 Log::warning("Inventario no encontrado", [
-                    'medication' => $name,
-                    'id_branch' => $num,
-                    'id_pharmacy' => $farm
+                    'medication' => $mediactionName,
+                    'id_branch' => $idBranch,
+                    'id_pharmacy' => $idPharmacy
                 ]);
                 return null;
             }
@@ -98,7 +98,7 @@ class MedicineRepository
         }
     }
 
-    public function updateStock(string $name, string $num, string $farm, int $newStock)
+    public function updateStock(string $name, string $idBranch, string $idPharmacy, int $newStock)
 {
     $maxRetries = 3;
 
@@ -112,8 +112,8 @@ class MedicineRepository
 
             $updated = DB::table('inventories')
                 ->where('id_medication', $medication->id_medication)
-                ->where('id_branch', $num)
-                ->where('id_pharmacy', $farm)
+                ->where('id_branch', $idBranch)
+                ->where('id_pharmacy', $idPharmacy)
                 ->lockForUpdate()
                 ->update(['current_stock' => $newStock]);
 
