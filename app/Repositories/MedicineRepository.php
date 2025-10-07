@@ -67,38 +67,6 @@ class MedicineRepository
             return response()->json(['error' => 'Error interno'], 500);
         }
     }
-/* 
-    public function getStock(string $mediactionName, string $idBranch, string $idPharmacy)
-    {
-        try {
-            $medication = $this->findMedicationByName($mediactionName);
-            if (!$medication) {
-                Log::warning("Medicamento no encontrado", ['name' => $mediactionName]);
-                return null;
-            }
-
-            $inventory = DB::table('inventories')
-                ->where('id_medication', $medication->id_medication)
-                ->where('id_branch', $idBranch)
-                ->where('id_pharmacy', $idPharmacy)
-                ->first();
-                
-
-            if (!$inventory) {
-                Log::warning("Inventario no encontrado", [
-                    'medication' => $mediactionName,
-                    'id_branch' => $idBranch,
-                    'id_pharmacy' => $idPharmacy
-                ]);
-                return null;
-            }
-
-            return (int) $inventory->current_stock;
-        }
-        catch (\Exception $e) {
-            return 0;            
-        }
-    } */
 
     public function getInventory(string $medicationName, string $idBranch, string $idPharmacy)
     {
