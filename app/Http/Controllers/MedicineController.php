@@ -17,8 +17,7 @@ class MedicineController extends Controller
 
     public function medicine_home()
     {
-        $inventory = null;
-        return view('Medicine.medicine_view', compact('inventory'));
+        return view('Medicine.medicine_view');
     }
 
     public function medicine_getBranch(Request $request)
@@ -44,19 +43,17 @@ class MedicineController extends Controller
 
     public function medicine_getInventory(Request $request)
 {
-    $name = $request->query('medication');
+    $nameMedication = $request->query('medication');
     $branchNum = $request->query('branch_num');
     $branchFarm = $request->query('branch_farm');
 
-    $inventory = $this->medicineService->getInventory($name, $branchNum, $branchFarm);
+    $inventory = $this->medicineService->getInventory($nameMedication, $branchNum, $branchFarm);
 
     if ($request->ajax()) {
         return response()->json([
             'stock' => $inventory ? $inventory->getCurrentStock() : 0
         ]);
     }
-
-    return view('Medicine.medicine_view', compact('inventory'));
 }
 
     public function medicine_process(Request $request)
