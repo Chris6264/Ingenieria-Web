@@ -44,6 +44,8 @@ class MedicineService
             $result -> description
         );
 
+        //TODO: Crear objeto inventario
+
         foreach ($medications as $index => $med) {
             $name = $med['name'];
             $quantity = $med['units'];
