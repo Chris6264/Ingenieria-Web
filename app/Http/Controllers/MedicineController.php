@@ -63,7 +63,7 @@ class MedicineController extends Controller
     {
         $pharmacyName = $request->input('pharmacy');
         $branchId = $request->input('branchId');
-        $branchFarm = $request->input('branchFarm');
+        $idBranchFarm = $request->input('branchFarm');
         $branchName = $request->input('branch');
         $medicationsCount = $request->input('medications_count', 0);
 
@@ -83,7 +83,7 @@ class MedicineController extends Controller
         $prescription = $this->medicineService->processPrescription(
             $pharmacyName,
             $branchId,
-            $branchFarm,
+            $idBranchFarm,
             $branchName,
             $medications
         );
@@ -94,7 +94,7 @@ class MedicineController extends Controller
                 'pharmacyName' => $pharmacyName,
                 'branchName' => $branchName,
                 'branchId' => $branchId,
-                'branchFarm' => $branchFarm,
+                'branchFarm' => $idBranchFarm,
                 'medications' => $medications
             ]);
         }
@@ -104,7 +104,7 @@ class MedicineController extends Controller
             'pharmacyName' => $pharmacyName,
             'branchName' => $branchName,
             'branchId' => $branchId,
-            'branchFarm' => $branchFarm,
+            'branchFarm' => $idBranchFarm,
             'medications' => $medications,
             'result' => ['success' => true, 'message' => 'Receta procesada correctamente.']
         ]);

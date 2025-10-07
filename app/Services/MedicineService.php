@@ -45,7 +45,7 @@ class MedicineService
             return ['success' => false, 'message' => 'No hay medicamentos en la receta'];
         }
 
-        $this->medicineRepository->beginTransaction();
+            $this->medicineRepository->beginTransaction();
 
         $ID = $this->medicineRepository->lastPrescriptionID() + 1;
         $result = $this->medicineRepository->newPrescription($ID);
