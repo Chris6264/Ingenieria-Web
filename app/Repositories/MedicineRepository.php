@@ -7,7 +7,6 @@ use App\Models\BranchModel;
 use App\Models\InventoryModel;
 use App\Models\PrescriptionMedicationModel;
 use App\Models\PrescriptionModel;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 
@@ -101,7 +100,6 @@ class MedicineRepository
         try {
             $medication = $this->findMedicationByName($name);
             if (!$medication) {
-                Log::warning("Medicamento no encontrado para actualizar", ['name' => $name]);
                 return false;
             }
 
@@ -112,27 +110,17 @@ class MedicineRepository
                 ->lockForUpdate()
                 ->update(['current_stock' => $newStock]);
 
-            Log::info("Stock actualizado", [
-                'medication' => $name,
-                'new_stock' => $newStock,
-                'rows_affected' => $updated
-            ]);
-
             return $updated > 0;
         } catch (QueryException $e) {
             if (str_contains(strtolower($e->getMessage()), 'deadlock')) {
-                Log::warning("Deadlock detectado, reintentando ($i)");
                 usleep(200000);
                 continue;
             }
-            Log::error("Error SQL al actualizar stock: " . $e->getMessage());
             return false;
         } catch (\Exception $e) {
-            Log::error("Error al actualizar stock: " . $e->getMessage());
             return false;
         }
     }
-    Log::error("Error: máximo de reintentos alcanzado al actualizar stock");
     return false;
     }
 }
