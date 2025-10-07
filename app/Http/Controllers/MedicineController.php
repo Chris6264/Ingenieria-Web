@@ -26,7 +26,7 @@ class MedicineController extends Controller
         $branch   = $request->query('branch');
 
         if (!$pharmacy || !$branch) {
-            return response()->json(['error' => 'Parámetros pharmacy y branch son obligatorios'], 400);
+            return response()->json(['error' => 'Pharmacy y branch son obligatorios'], 400);
         }
 
         $branchData = $this->medicineService->getBranchInfo($pharmacy, $branch);
