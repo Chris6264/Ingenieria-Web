@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\MedicationModel;
 use App\Models\BranchModel;
+use App\Models\InventoryModel;
 use App\Models\PrescriptionMedicationModel;
 use App\Models\PrescriptionModel;
 use Illuminate\Support\Facades\Log;
@@ -81,6 +82,7 @@ class MedicineRepository
                 ->where('id_branch', $idBranch)
                 ->where('id_pharmacy', $idPharmacy)
                 ->first();
+                
 
             if (!$inventory) {
                 Log::warning("Inventario no encontrado", [
@@ -95,6 +97,31 @@ class MedicineRepository
         }
         catch (\Exception $e) {
             return 0;            
+        }
+    }
+
+    public function getInventory(string $medicationName, string $idBranch, string $idPharmacy)
+    {
+        try {
+            $medication = $this->findMedicationByName($medicationName);
+            if (!$medication) {
+                return null;
+            }
+
+            $inventory = InventoryModel::where('id_medication', $medication->id_medication)
+                ->where('id_branch', $idBranch)
+                ->where('id_pharmacy', $idPharmacy)
+                ->first();
+            
+            if (!$inventory) {
+                return null;
+            }
+            
+            return $inventory;
+
+        }
+        catch (\Exception $e) {
+            return null;
         }
     }
 

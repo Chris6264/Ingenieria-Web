@@ -44,17 +44,33 @@ class MedicineService
             $result -> description
         );
 
-        //TODO: Crear objeto inventario
-
         foreach ($medications as $index => $med) {
             $name = $med['name'];
             $quantity = $med['units'];
-        
-            $stock = $this->medicineRepository->getStock(
+
+            $inventory = $this->medicineRepository->getInventory(
                 $name,
                 $branchId,
                 $branchFarm
             );
+
+            if (!$inventory) {
+                $this->medicineRepository->rollbackTransaction();
+                return [
+                    'success' => false,
+                    'message' => "Inventario no encontrado para el medicamento {$name}."
+                ];
+            }
+
+            $inventoryObject = new Inventory(
+                    $inventory->id_medication,
+                    $name,
+                    $inventory->id_branch,
+                    $inventory->id_pharmacy,
+                    $inventory->current_stock
+            );
+
+            $stock = $inventoryObject->getCurrentStock();
         
             if ($stock === null) {
                 $this->medicineRepository->rollbackTransaction();
@@ -63,28 +79,29 @@ class MedicineService
                     'message' => "Medicamento {$name} no encontrado en inventario"
                 ];
             }
+
             if ($stock < $quantity) {
                 $this->medicineRepository->rollbackTransaction();
                 return [
                     'success' => false,
-                    'message' => "Stock insuficiente para {$name}. Disponible: {$stock}, Solicitado: {$quantity}"
+                    'message' => "Stock insuficiente para {$name}. Disponible: {$inventoryObject->getCurrentStock()}, Solicitado: {$quantity}"
                 ];
             }
             
-            $newStock = $stock - $quantity;
+            $inventoryObject->setCurrentStock($stock - $quantity);
+
             $updated = $this->medicineRepository->updateStock(
-                $name,
-                $branchId,
-                $branchFarm,
-                $newStock
+                $inventoryObject->getMedicationName(),
+                $inventoryObject->getIdBranch(),
+                $inventoryObject->getIdPharmacy(),
+                $inventoryObject->getCurrentStock()
             );
-            
+
             if (!$updated) {
                 $this->medicineRepository->rollbackTransaction();
                 return [
                     'success' => false,
                     'message' => "Error al actualizar stock de {$name}"
-            
                 ];
             }
             $med = $this->medicineRepository->findMedicationByName($name);
