@@ -56,10 +56,9 @@
                             disabled>
                     </div>
 
-                    <div class="col-12 col-md-2">
-                        <label for="quantity" class="form-label">Número de Unidades</label>
-                        <input type="number" class="form-control" id="quantity" placeholder="0" value="{{ optional($inventoryObject)->getCurrentStock() ?? 0 }}" disabled>
-                    </div>
+                    <div class="col-12 col-md-2"> <label for="quantity" class="form-label">Número de Unidades</label>
+                        <input type="number" class="form-control" id="quantity" placeholder="0" value="0"
+                            disabled> </div>
 
                     <div class="col-12 col-md-2">
                         <label for="inStock" class="form-label">En existencia</label>
