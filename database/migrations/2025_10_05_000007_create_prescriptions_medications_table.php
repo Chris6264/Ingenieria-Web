@@ -18,12 +18,12 @@ return new class extends Migration
             $table->primary(['id_prescription', 'id_medication'], 'pk_prescriptions_medications');
 
             $table->foreign('id_prescription', 'fk_prescriptions_medications_prescription')
-                  ->references('id_prescription')
-                  ->on('prescriptions');
+                ->references('id_prescription')
+                ->on('prescriptions');
 
             $table->foreign('id_medication', 'fk_prescriptions_medications_medication')
-                  ->references('id_medication')
-                  ->on('medications');
+                ->references('id_medication')
+                ->on('medications');
 
         });
     }
