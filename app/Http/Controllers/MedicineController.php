@@ -42,7 +42,7 @@ class MedicineController extends Controller
         ]);
     }
 
-   public function medicine_getInventory(Request $request)
+    public function medicine_getInventory(Request $request)
 {
     $name = $request->query('medication');
     $branchNum = $request->query('branch_num');
