@@ -32,7 +32,7 @@ class MedicineController extends Controller
         $branchData = $this->medicineService->getBranchInfo($pharmacy, $branch);
 
         if (!$branchData) {
-            return response()->json(['error' => 'Sucursal no encontrada'], 404);
+            return response()->json(['error' => 'sucursal no encontrada'], 404);
         }
 
         return response()->json([
