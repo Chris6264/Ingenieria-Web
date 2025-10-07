@@ -17,8 +17,8 @@ class MedicineController extends Controller
 
     public function medicine_home()
     {
-        $inventoryObject = null;
-        return view('Medicine.medicine_view', compact('inventoryObject'));
+        $inventory = null;
+        return view('Medicine.medicine_view', compact('inventory'));
     }
 
     public function medicine_getBranch(Request $request)
@@ -56,7 +56,7 @@ class MedicineController extends Controller
         ]);
     }
 
-    return view('Medicine.medicine_view', compact('inventoryObject'));
+    return view('Medicine.medicine_view', compact('inventory'));
 }
 
     public function medicine_process(Request $request)
