@@ -23,9 +23,20 @@ class MedicineService
         return $branch;
     }
 
-    public function getStock(string $medicationName, string $idBranch, string $idPharmacy): int
-    {
-        return $this->medicineRepository->getStock($medicationName, $idBranch, $idPharmacy);
+    public function getInventory($name, $branchNum, $branchFarm){
+            $inventory = $this->medicineRepository->getInventory($name, $branchNum, $branchFarm);
+
+            if ($inventory) {
+                $inventoryObject = new Inventory(
+                $inventory->id_medication,
+                $name,
+                $inventory->id_branch,
+                $inventory->id_pharmacy,
+                $inventory->current_stock);
+            } else {
+                $inventoryObject = null;
+            }
+            return $inventoryObject;
     }
 
     public function processPrescription($pharmacyName, $branchId, $branchFarm, $branchName, $medications)

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\MedicineService;
+use App\Services\Inventory;
 
 class MedicineController extends Controller
 {
@@ -16,7 +17,8 @@ class MedicineController extends Controller
 
     public function medicine_home()
     {
-        return view('Medicine.medicine_view');
+        $inventoryObject = null;
+        return view('Medicine.medicine_view', compact('inventoryObject'));
     }
 
     public function medicine_getBranch(Request $request)
@@ -40,20 +42,22 @@ class MedicineController extends Controller
         ]);
     }
 
-    public function medicine_getStock(Request $request)
-    {
-        
-        $name = $request->query('medication');
-        $branchNum = $request->query('branch_num');
-        $branchFarm = $request->query('branch_farm');
-            
-        if (!$name || !$branchNum || !$branchFarm) {
-            return response()->json(['stock' => 0, 'error' => 'Parámetros incompletos'], 400);
-        }
+   public function medicine_getInventory(Request $request)
+{
+    $name = $request->query('medication');
+    $branchNum = $request->query('branch_num');
+    $branchFarm = $request->query('branch_farm');
 
-        $stock = $this->medicineService->getStock($name, $branchNum, $branchFarm);
-        return response()->json(['stock' => $stock]);
+    $inventory = $this->medicineService->getInventory($name, $branchNum, $branchFarm);
+
+    if ($request->ajax()) {
+        return response()->json([
+            'stock' => $inventory ? $inventory->getCurrentStock() : 0
+        ]);
     }
+
+    return view('Medicine.medicine_view', compact('inventoryObject'));
+}
 
     public function medicine_process(Request $request)
     {
@@ -62,12 +66,12 @@ class MedicineController extends Controller
         $branchFarm = $request->input('branchFarm');
         $branchName = $request->input('branch');
         $medicationsCount = $request->input('medications_count', 0);
-        
+
         $medications = [];
         for ($i = 0; $i < $medicationsCount; $i++) {
             $medName = $request->input("medication_{$i}");
             $units = $request->input("units_{$i}");
-            
+
             if ($medName && $units) {
                 $medications[] = [
                     'name' => $medName,
@@ -96,7 +100,7 @@ class MedicineController extends Controller
         }
 
         return view('Medicine.result', [
-            'prescription' => $prescription, 
+            'prescription' => $prescription,
             'pharmacyName' => $pharmacyName,
             'branchName' => $branchName,
             'branchId' => $branchId,

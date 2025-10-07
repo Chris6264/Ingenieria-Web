@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,29 +17,34 @@
         </div>
 
         <div class="card-body">
-            <form method="POST" action="{{ route('medicine_process') }}" id="prescriptionForm" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('medicine_process') }}" id="prescriptionForm"
+                enctype="multipart/form-data">
                 @csrf
                 <div class="row g-3 mb-3">
                     <div class="col-12 col-md-6">
                         <label for="pharmacy" class="form-label">Farmacia</label>
-                        <input type="text" class="form-control" id="pharmacy" name="pharmacy" placeholder="Escribe la farmacia" value="{{ old('pharmacy') }}">
+                        <input type="text" class="form-control" id="pharmacy" name="pharmacy"
+                            placeholder="Escribe la farmacia" value="{{ old('pharmacy') }}">
                     </div>
 
                     <div class="col-12 col-md-6">
                         <label for="branch" class="form-label">Sucursal</label>
-                        <input type="text" class="form-control" id="branch" name="branch" placeholder="Escribe la sucursal" value="{{ old('branch') }}" disabled>
+                        <input type="text" class="form-control" id="branch" name="branch"
+                            placeholder="Escribe la sucursal" value="{{ old('branch') }}" disabled>
                     </div>
                 </div>
 
                 <div class="row g-3 mb-3">
                     <div class="col-12 col-md-6">
                         <label for="branchId" class="form-label">Num Sucursal</label>
-                        <input type="text" class="form-control bg-light" id="branchId" name="branchId" placeholder="Número de sucursal" readonly value="{{ old('branchId') }}">
+                        <input type="text" class="form-control bg-light" id="branchId" name="branchId"
+                            placeholder="Número de sucursal" readonly value="{{ old('branchId') }}">
                     </div>
 
                     <div class="col-12 col-md-6">
                         <label for="branchFarmDisplay" class="form-label">Farmacia (ID)</label>
-                        <input type="text" class="form-control bg-light" id="branchFarmDisplay" placeholder="ID de farmacia" readonly>
+                        <input type="text" class="form-control bg-light" id="branchFarmDisplay"
+                            placeholder="ID de farmacia" readonly>
                         <input type="hidden" id="branchFarm" name="branchFarm">
                     </div>
                 </div>
@@ -46,12 +52,13 @@
                 <div class="row g-3 mb-3 align-items-end">
                     <div class="col-12 col-md-4">
                         <label for="medication" class="form-label">Medicamento</label>
-                        <input type="text" class="form-control" id="medication" placeholder="Escribe el medicamento" disabled>
+                        <input type="text" class="form-control" id="medication" placeholder="Escribe el medicamento"
+                            disabled>
                     </div>
 
                     <div class="col-12 col-md-2">
                         <label for="quantity" class="form-label">Número de Unidades</label>
-                        <input type="number" class="form-control" id="quantity" placeholder="0" value="0"  disabled>
+                        <input type="number" class="form-control" id="quantity" placeholder="0" value="{{ optional($inventoryObject)->getCurrentStock() ?? 0 }}" disabled>
                     </div>
 
                     <div class="col-12 col-md-2">
@@ -93,8 +100,10 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    
+
 </body>
+
 </html>
 </body>
+
 </html>

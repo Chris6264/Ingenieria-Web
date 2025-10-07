@@ -67,7 +67,7 @@ class MedicineRepository
             return response()->json(['error' => 'Error interno'], 500);
         }
     }
-
+/* 
     public function getStock(string $mediactionName, string $idBranch, string $idPharmacy)
     {
         try {
@@ -98,7 +98,7 @@ class MedicineRepository
         catch (\Exception $e) {
             return 0;            
         }
-    }
+    } */
 
     public function getInventory(string $medicationName, string $idBranch, string $idPharmacy)
     {
