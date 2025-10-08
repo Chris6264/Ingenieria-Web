@@ -78,7 +78,6 @@ class MedicineRepository
             $inventory = InventoryModel::where('id_medication', $medication->id_medication)
                 ->where('id_branch', $idBranch)
                 ->where('id_pharmacy', $idPharmacy)
-                ->lock()
                 ->first();
             
             if (!$inventory) {
