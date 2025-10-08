@@ -75,9 +75,11 @@ class MedicineRepository
                 return null;
             }
 
-            $inventory = InventoryModel::where('id_medication', $medication->id_medication)
+            $inventory = DB::table('inventories')
+                ->where('id_medication', $medication->id_medication)
                 ->where('id_branch', $idBranch)
                 ->where('id_pharmacy', $idPharmacy)
+                ->lockForUpdate()
                 ->first();
             
             if (!$inventory) {
@@ -107,7 +109,6 @@ class MedicineRepository
                 ->where('id_medication', $medication->id_medication)
                 ->where('id_branch', $idBranch)
                 ->where('id_pharmacy', $idPharmacy)
-                ->lockForUpdate()
                 ->update(['current_stock' => $newStock]);
 
             return $updated > 0;
