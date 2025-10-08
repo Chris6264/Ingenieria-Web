@@ -23,13 +23,13 @@ class MedicineService
         return $branch;
     }
 
-    public function getInventory($name, $branchNum, $branchFarm){
-            $inventory = $this->medicineRepository->getInventory($name, $branchNum, $branchFarm);
+    public function getInventory($medicationName, $branchNum, $branchFarm){
+            $inventory = $this->medicineRepository->getInventory($medicationName, $branchNum, $branchFarm);
 
             if ($inventory) {
                 $inventoryObject = new Inventory(
                 $inventory->id_medication,
-                $name,
+                $medicationName,
                 $inventory->id_branch,
                 $inventory->id_pharmacy,
                 $inventory->current_stock);

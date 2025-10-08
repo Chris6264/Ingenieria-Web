@@ -43,11 +43,11 @@ class MedicineController extends Controller
 
     public function medicine_getInventory(Request $request)
 {
-    $nameMedication = $request->query('medication');
+    $medicationName = $request->query('medication');
     $branchNum = $request->query('branch_num');
     $branchFarm = $request->query('branch_farm');
 
-    $inventory = $this->medicineService->getInventory($nameMedication, $branchNum, $branchFarm);
+    $inventory = $this->medicineService->getInventory($medicationName, $branchNum, $branchFarm);
 
     if ($request->ajax()) {
         return response()->json([
