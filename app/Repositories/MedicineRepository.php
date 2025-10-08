@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Models\MedicationModel;
 use App\Models\BranchModel;
-use App\Models\InventoryModel;
 use App\Models\PrescriptionMedicationModel;
 use App\Models\PrescriptionModel;
 use Illuminate\Support\Facades\DB;

@@ -8,7 +8,7 @@ use App\Services\Inventory;
 
 class MedicineController extends Controller
 {
-    protected $medicineService;
+    private $medicineService;
 
     public function __construct(MedicineService $medicineService)
     {

@@ -6,7 +6,7 @@ use App\Repositories\MedicineRepository;
 
 class MedicineService
 {
-    protected $medicineRepository;
+    private $medicineRepository;
 
     public function __construct(MedicineRepository $medicineRepository)
     {
