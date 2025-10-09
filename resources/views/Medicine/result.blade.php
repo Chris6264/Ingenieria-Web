@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resultado de Receta</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-light">
 
     <div class="container mt-5">
         <h2 class="mb-4 text-center">Receta</h2>
 
-        @if(isset($error))
+        @if (isset($error))
             <div class="alert alert-danger text-center">
                 <strong>Error:</strong> {{ $error }}
             </div>
@@ -21,7 +23,6 @@
                     Volver al formulario
                 </a>
             </div>
-
         @elseif(isset($prescription))
             <div class="card shadow p-4">
                 <h4 class="mb-3">Detalles de la receta:</h4>
@@ -29,13 +30,11 @@
                     <thead>
                         <tr>
                             <th>ID receta</th>
-                            <th>Descripción</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{{ $prescription->getIdPrescription() }}</td>
-                            <td>{{ $prescription->getDescription() }}</td>
+                            <td>{{ optional($prescription)->getIdPrescription() }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -52,7 +51,15 @@
 
                 <div class="mt-4">
                     <h5>Medicamentos procesados:</h5>
-                    @if(!empty($medications))
+
+                    @php
+                        $medications = optional($prescription)->getMedication();
+                        if (is_string($medications)) {
+                            $medications = json_decode($medications, true);
+                        }
+                    @endphp
+
+                    @if (!empty($medications) && is_array($medications))
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -61,10 +68,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($medications as $med)
+                                @foreach ($medications as $med)
                                     <tr>
-                                        <td>{{ $med['name'] }}</td>
-                                        <td>{{ $med['units'] }}</td>
+                                        <td>{{ $med['name'] ?? 'Desconocido' }}</td>
+                                        <td>{{ $med['units'] ?? 0 }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -80,7 +87,6 @@
                     </a>
                 </div>
             </div>
-
         @else
             <div class="alert alert-warning text-center">
                 No se pudo procesar la receta. Intentelo nuevamente.
@@ -95,4 +101,5 @@
     </div>
 
 </body>
+
 </html>

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('prescriptions', function (Blueprint $table) {
             $table->id('id_prescription');
-            $table->text('description');
+            $table->json('medication');
         });
     }
     

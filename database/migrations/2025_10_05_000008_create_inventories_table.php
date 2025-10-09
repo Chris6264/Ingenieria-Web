@@ -12,24 +12,24 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('inventories', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_medication');
-            $table->unsignedBigInteger('id_branch');
             $table->char('id_pharmacy', 3);
+            $table->unsignedBigInteger('id_branch');
+            $table->unsignedBigInteger('id_medication');
             
             $table->integer('max_stock');
             $table->integer('min_stock');
             $table->integer('current_stock');
 
-            $table->primary(['id_medication', 'id_branch', 'id_pharmacy'], 'pk_inventories');
+            $table->primary(['id_pharmacy', 'id_branch','id_medication'], 'pk_inventories');
 
 
             $table->foreign('id_medication', 'fk_inventories_medication')
-                  ->references('id_medication')
-                  ->on('medications');
+                ->references('id_medication')
+                ->on('medications');
 
             $table->foreign('id_branch', 'fk_inventories_branch')
-                  ->references('id_branch')
-                  ->on('branches');
+                ->references('id_branch')
+                ->on('branches');
         });
     }
 

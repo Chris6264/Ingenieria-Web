@@ -23,21 +23,24 @@ class MedicineService
         return $branch;
     }
 
-    public function getInventory($medicationName, $branchNum, $branchFarm){
-            $inventory = $this->medicineRepository->getInventory($medicationName, $branchNum, $branchFarm);
+    public function getInventory($medicationName, $branchNum, $branchFarm)
+    {
+        $inventory = $this->medicineRepository->getInventory($medicationName, $branchNum, $branchFarm);
 
-            if ($inventory) {
-                $inventoryObject = new Inventory(
+        if ($inventory) {
+            $inventoryObject = new Inventory(
                 $inventory->id_medication,
                 $medicationName,
                 $inventory->id_branch,
                 $inventory->id_pharmacy,
-                $inventory->current_stock);
-            } else {
-                $inventoryObject = null;
-            }
-            return $inventoryObject;
+                $inventory->current_stock
+            );
+        } else {
+            $inventoryObject = null;
+        }
+        return $inventoryObject;
     }
+
 
     public function processPrescription($pharmacyName, $branchId, $branchFarm, $branchName, $medications)
     {
@@ -45,61 +48,40 @@ class MedicineService
             return ['success' => false, 'message' => 'No hay medicamentos en la receta'];
         }
 
-            $this->medicineRepository->beginTransaction();
+        $this->medicineRepository->beginTransaction();
+        $prescriptionObj = $this->medicineRepository->savePrescription($medications);
+        $id = $prescriptionObj->id_prescription;
+        $prescription = new Prescription($prescriptionObj->id_prescription, $medications);
 
-        $ID = $this->medicineRepository->lastPrescriptionID() + 1;
-        $result = $this->medicineRepository->newPrescription($ID);
-
-        $prescription = new Prescription( 
-            $result -> id_prescription,
-            $result -> description
-        );
-
-        foreach ($medications as $index => $med) {
+        foreach ($medications as $med) {
             $name = $med['name'];
             $quantity = $med['units'];
 
-            $inventory = $this->medicineRepository->getInventory(
-                $name,
-                $branchId,
-                $branchFarm
-            );
+            $inventory = $this->medicineRepository->getInventory($name, $branchId, $branchFarm);
 
             if (!$inventory) {
                 $this->medicineRepository->rollbackTransaction();
-                return [
-                    'success' => false,
-                    'message' => "Inventario no encontrado para el medicamento {$name}."
-                ];
+                return ['success' => false, 'message' => "Inventario no encontrado para {$name}"];
             }
 
             $inventoryObject = new Inventory(
-                    $inventory->id_medication,
-                    $name,
-                    $inventory->id_branch,
-                    $inventory->id_pharmacy,
-                    $inventory->current_stock
+                $inventory->id_medication,
+                $name,
+                $inventory->id_branch,
+                $inventory->id_pharmacy,
+                $inventory->current_stock
             );
 
             $stock = $inventoryObject->getCurrentStock();
-        
-            if ($stock === null) {
-                $this->medicineRepository->rollbackTransaction();
-                return [
-                    'success' => false,
-                    'message' => "Medicamento {$name} no encontrado en inventario"
-                ];
-            }
 
             if ($stock < $quantity) {
                 $this->medicineRepository->rollbackTransaction();
-                return [
-                    'success' => false,
-                    'message' => "Stock insuficiente para {$name}. Disponible: {$inventoryObject->getCurrentStock()}, Solicitado: {$quantity}"
-                ];
+                return ['success' => false, 'message' => "Stock insuficiente para {$name}. Disponible: {$stock}, Solicitado: {$quantity}"];
             }
-            
-            $inventoryObject->setCurrentStock($stock - $quantity);
+
+            $newStock = $stock - $quantity;
+
+            $inventoryObject->setCurrentStock($newStock);
 
             $updated = $this->medicineRepository->updateStock(
                 $inventoryObject->getMedicationName(),
@@ -110,18 +92,14 @@ class MedicineService
 
             if (!$updated) {
                 $this->medicineRepository->rollbackTransaction();
-                return [
-                    'success' => false,
-                    'message' => "Error al actualizar stock de {$name}"
-                ];
+                return ['success' => false, 'message' => "Error al actualizar stock de {$name}"];
             }
-            $med = $this->medicineRepository->findMedicationByName($name);
-            $idMed = $med->id_medication;
-            $this->medicineRepository->savePrescriptionsMedications($ID, $idMed);
-        }
-        
-        $this->medicineRepository->commitTransaction();
 
+            $medObj = $this->medicineRepository->findMedicationByName($name);
+            $this->medicineRepository->savePrescriptionsMedications($id, $medObj->id_medication);
+        }
+
+        $this->medicineRepository->commitTransaction();
         return $prescription;
     }
 }

@@ -5,12 +5,12 @@ namespace App\Services;
 class Prescription
 {
     private int $idPrescription;
-    private string $description;
+    private array $medication;
 
-    public function __construct(int $idPrescription, string $description)
+    public function __construct(int $idPrescription, array $medication)
     {
         $this->idPrescription = $idPrescription;
-        $this->description = $description;
+        $this->medication = $medication;
     }
 
     public function getIdPrescription()
@@ -18,9 +18,9 @@ class Prescription
         return $this->idPrescription;
     }
 
-    public function getDescription()
+    public function getMedication()
     {
-        return $this->description;
+        return $this->medication;
     }
 
     public function setIdPrescription(int $idPrescription)
@@ -28,8 +28,8 @@ class Prescription
         $this->idPrescription = $idPrescription;
     }
 
-    public function setDescription(string $description)
+    public function setMedication(array $medication)
     {
-        $this->description = $description;
+        $this->medication = $medication;
     }
 }

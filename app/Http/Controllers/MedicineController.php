@@ -96,13 +96,12 @@ class MedicineController extends Controller
             ]);
         }
 
-        return view('Medicine.result', [
+        return view('Medicine.result', compact('prescription'), [
             'prescription' => $prescription,
             'pharmacyName' => $pharmacyName,
             'branchName' => $branchName,
             'branchId' => $branchId,
             'branchFarm' => $idBranchFarm,
-            'medications' => $medications,
             'result' => ['success' => true, 'message' => 'Receta procesada correctamente.']
         ]);
     }

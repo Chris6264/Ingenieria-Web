@@ -26,18 +26,9 @@ class MedicineRepository
         DB::rollBack();
     }
 
-    public function lastPrescriptionID(){
-        try {
-            return PrescriptionModel::max('id_prescription');
-        } catch (\Throwable $e) {
-            return response()->json(['error' => 'Error interno'], 500);
-        }
-    }
-
-    public function newPrescription($id){
+    public function savePrescription($medication){
         return PrescriptionModel::create([
-            'id_prescription' => $id,
-            'description' => "Receta " . $id,
+            'medication' => $medication,
         ]);
     }
 
@@ -75,10 +66,10 @@ class MedicineRepository
             }
 
             $inventory = DB::table('inventories')
-                ->where('id_medication', $medication->id_medication)
-                ->where('id_branch', $idBranch)
-                ->where('id_pharmacy', $idPharmacy)
-                ->lockForUpdate()
+            ->where('id_pharmacy', $idPharmacy)
+            ->where('id_branch', $idBranch)
+            ->where('id_medication', $medication->id_medication)
+            ->lockForUpdate()
                 ->first();
             
             if (!$inventory) {
@@ -105,9 +96,9 @@ class MedicineRepository
             }
 
             $updated = DB::table('inventories')
-                ->where('id_medication', $medication->id_medication)
-                ->where('id_branch', $idBranch)
                 ->where('id_pharmacy', $idPharmacy)
+                ->where('id_branch', $idBranch)
+                ->where('id_medication', $medication->id_medication)
                 ->update(['current_stock' => $newStock]);
 
             return $updated > 0;
